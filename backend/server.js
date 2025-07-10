@@ -10,7 +10,7 @@ app.use(express.json())
 const neighborhoodsData = JSON.parse(fs.readFileSync('processed_delhi_data.json'))
 
 app.post('/match', (req, res) =>{
-    const userWeights = req.body // More descriptive name
+    const userWeights = req.body 
 
     // This map connects frontend keys to JSON keys
     const keyMap = {
@@ -22,20 +22,20 @@ app.post('/match', (req, res) =>{
         hospitals : 'norm_hospital'
     }
 
-    const scoredNeighborhoods = neighborhoodsData.map( hood => { // More descriptive name
+    const scoredNeighborhoods = neighborhoodsData.map( hood => { 
         let totalScore = 0
-        let totalWeight = 0 // Will be a number
+        let totalWeight = 0 
 
         for(const metric in userWeights){
             const normKey = keyMap[metric]
             
             if(hood.hasOwnProperty(normKey) && userWeights[metric]){
                 const normScore = hood[normKey]
-                // ❗ CRITICAL FIX: Convert the incoming user weight from a string to a number
+                
                 const userWeight = parseInt(userWeights[metric], 10)
 
                 totalScore += normScore * userWeight
-                totalWeight += userWeight // Now this is a proper mathematical addition
+                totalWeight += userWeight
             }
         }
 
@@ -56,5 +56,5 @@ app.get('/', (req, res) =>{
 })
 
 app.listen(port, ()=> {
-    console.log(`🚀 Server running on http://localhost:${port}`)
+    console.log(`Running on port 3000.....`)
 })
