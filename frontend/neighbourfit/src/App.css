@@ -1,0 +1,96 @@
+/* App.css */
+
+/* Center everything in the viewport */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start; /* Use center if you want everything vertically centered */
+  padding-top: 2rem;
+  box-sizing: border-box;
+}
+
+/* Title styling */
+h1 {
+  color: #00c896;
+  margin-bottom: 1rem;
+}
+
+/* Form box styling */
+form {
+  background-color: #1e1e1e;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.1);
+}
+
+/* Label styles */
+label {
+  display: block;
+  margin-top: 1.2rem;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+  color: #dddddd;
+}
+
+/* Range input styling */
+input[type="range"] {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  accent-color: #00c896;
+}
+
+/* Radio button styling */
+input[type="radio"] {
+  margin-right: 0.4rem;
+  transform: scale(1.2);
+}
+
+/* Button styling */
+button {
+  display: block;
+  width: 100%;
+  margin-top: 2rem;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #00c896;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #00e5b0;
+}
+
+/* Results container styling */
+.results-container {
+  margin-top: 3rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #1a1a1a;
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.1);
+}
+
+.results-container h3 {
+  margin: 0.5rem 0 0.3rem;
+  color: #ffffff;
+}
+
+.results-container p {
+  margin: 0;
+  color: #00ffbb;
+  font-weight: bold;
+}
