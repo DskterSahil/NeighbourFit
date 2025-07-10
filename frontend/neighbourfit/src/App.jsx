@@ -35,7 +35,7 @@ export default function App(){
     delete parameters.isStudent
 
     try{
-      const response = await axios.post("http://localhost:3000/match", parameters);
+      const response = await axios.post("https://neighborfit-api-ly4c.onrender.com/match", parameters);
       setResults(response.data)
     }
     catch(err){
