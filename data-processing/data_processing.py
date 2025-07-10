@@ -4,8 +4,8 @@ import time
 import json
 from geopy.distance import geodesic
 
-# ✅ Foursquare Places API Key & Headers
-# Use the key you have for the Foursquare Places API
+#  Foursquare Places API Key & Headers
+
 FOURSQUARE_API_KEY = "TLG5B2RTGLRA4FE2A4VTMCKXCCMNRBZTPWXZOAIRDL1IOE2H"
 HEADERS = {
     "Authorization": f"Bearer {FOURSQUARE_API_KEY}",
@@ -13,7 +13,7 @@ HEADERS = {
     "X-Places-Api-Version": "2025-06-17"
 }
 
-# ✅ Load CSV files
+#  Load CSV files
 try:
     neighborhoods = pd.read_csv("delhi_neighborhoods.csv")
     metro_stations = pd.read_csv("metro_stations.csv")
@@ -21,14 +21,14 @@ except FileNotFoundError as e:
     print(f"Error: {e}. Please make sure your CSV files are in the same directory.")
     exit()
 
-# ✅ Amenity query terms
+#  Amenity query terms
 amenities = [
     "cafe", "restaurant", "gym", "school", "hospital", "grocery", 
     "playground", "park", "day care", "bookstore", "coaching center"
 ]
 
 
-# ✅ CORRECTED Function to fetch total place count by paginating
+#  Function to fetch total place count by paginating
 def fetch_amenity_count(lat, lon, query_term, radius):
     """
     Fetches the total count by paginating through all results using the cursor.
@@ -43,7 +43,7 @@ def fetch_amenity_count(lat, lon, query_term, radius):
             "ll": f"{lat},{lon}",
             "radius": int(radius),
             "query": query_term,
-            "fields": "fsq_place_id", # Only request the ID to keep it lightweight
+            "fields": "fsq_place_id", 
             "limit": 50
         }
         if cursor:
@@ -55,17 +55,17 @@ def fetch_amenity_count(lat, lon, query_term, radius):
             if res.status_code != 200:
                 data = res.json()
                 print(f"  API error ({query_term}):", data.get("message", "Unknown error"))
-                return total # Return what we have so far
+                return total 
 
             data = res.json()
             total += len(data.get("results", []))
             
-            # Check for the next cursor to continue paginating
+           
             cursor = data.get("context", {}).get("next_cursor")
             if not cursor:
                 break # Exit the loop if there are no more pages
 
-            time.sleep(0.2) # Small delay between paginated requests
+            time.sleep(0.2) 
 
         except Exception as e:
             print(f"  Request failed for {query_term}: {e}")
@@ -73,7 +73,7 @@ def fetch_amenity_count(lat, lon, query_term, radius):
 
     return total
 
-# ✅ Distance to nearest metro station
+# Distance to nearest metro station
 def nearest_metro_distance(lat, lon):
     try:
         dists = metro_stations.apply(
@@ -85,7 +85,7 @@ def nearest_metro_distance(lat, lon):
         print(f"Metro distance error: {e}")
         return None
 
-# ✅ Function to normalize all collected data
+# Function to normalize all collected data
 def normalize_data(data):
     print("\n Normalizing data...")
     df = pd.DataFrame(data)
@@ -129,7 +129,7 @@ def normalize_data(data):
         df['norm_community'] = (df['community_raw'] - min_comm) / (max_comm - min_comm)
 
     
-    # 2d. 🆕 Student-Friendly Score
+    # 2d. Student-Friendly Score
     print("  Creating composite score: 'norm_student_friendly'")
     # Combines access to bookstores and coaching centers
     df['student_friendly_raw'] = df['bookstore_count'] + df['coaching center_count']
@@ -142,7 +142,7 @@ def normalize_data(data):
     return df.to_dict('records')
 
 
-# ✅ Process neighborhoods
+# Process neighborhoods
 processed_data = []
 for _, hood in neighborhoods.iterrows():
     print(f"\n Processing {hood['name']}...")
@@ -159,14 +159,14 @@ for _, hood in neighborhoods.iterrows():
         count = fetch_amenity_count(lat, lon, amenity, radius)
         print(f"   {amenity:<10}: {count}")
         data[f"{amenity}_count"] = count
-        time.sleep(0.3) # Delay between different amenity searches
+        time.sleep(0.3) 
 
     processed_data.append(data)
 
-# ✅ Normalize the final data
+#  Normalize the final data
 final_data = normalize_data(processed_data)
 
-# ✅ Save to JSON
+#  Save to JSON
 with open("processed_delhi_data.json", "w", encoding="utf-8") as f:
     json.dump(final_data, f, indent=4)
 
